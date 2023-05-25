@@ -2,6 +2,7 @@ package com.example.Java_May_Spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 //Agenda： networking： tcp， udp， http/s ssl/tls
 // tcp/ip model， osi model
 // spring what is po.xml
@@ -222,6 +223,302 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  *  502 bad gateway
  *
+ * what is https?
+ * http + ssl/tls
+ *
+ * user is using http -> no encryption
+ * user is using https -> encrypted data -> server
+ *
+ *  TCP happens before this encryption
+ *
+ * processing of encryption
+ *
+ * client side											server side: public key for encryption, private key for decryption
+ *
+ * 	1 random #			------Client hello ------>     1 random #
+ *
+ *		2 random #	   <-----Server hello -----       2 random
+ *		CA				<-----2.1: certificate------
+ *		public		   <---2.2: key exchange-------
+ *						<----- server hello done----
+ *
+ *generate pre-master key ----->  this message is encrypted with public key -->  pre-master key
+ *
+ *
+ *
+ *
+ * steps; 1 from 4 -> asymmetric encryption
+ * 1: the client side wants to send CLIENT HELLO to build an encrypted connection
+ * 					client supports TLS version(s) + cipher suite + first random #
+ *
+ * 2: the server receives CLIENT HELLO and starts to send server hello
+ * 				CA stands for certificate authority: make sure client is able to be trusted
+ * 			CA-> self-signed CA -> you will receive error
+ *
+ *3: client key exchange
+ * the client side received server hello done. generate a pre-master key : random #
+ *
+ * 4: the client and server side receive pre-master key
+ * session key = pre-master key + random # 1 + random # 2
+ * session key on the server side = session key on the client side ->
+ *
+ * session key -> start to exchange data ->  symmetric encryption
+ *
+ * what is asymmetric encryption?
+ *
+ * public key is ued for encryption, private key is used for decryption
+ * RSA ->
+ * secure communication
+ *
+ * what is symmetric encryption?
+ * one key is used for both encryption and decryption
+ * faster than asymmetric encryption
+ *  AES, DES,
+ *  large amounts of data
+ *
+ *
+ *
+ *  ===========================spring boot======================
+ *  why do we use spring boot?
+ *  	less configuration -> able to quickly getting off the ground with spring boot based project
+ *
+ *  what is spring mvc?
+ *   model-view - controller(MVC): software architectural pattern
+ *   		model:  represents: data and business logic of your application: updating, processing, excapsulate data
+ *   		VIEW: rendering the data from the model to the user: HTML< XML, Json
+ *
+ *   		controller: user -> request -> controller: handles user input and update the model and view.
+ *   					an intermediary between the model and the view.
+ *
+ *
+ *   Flexibility: add servers as much as you want to your application(easy to extend your application)
+ *   reusability: bank service -> user service: each components can be reused across different application
+ *   separation: makes your application easy to develop, lookup, test and maintian
+ *
+ *   // sample calculator
+ *   // add, sub / divide / multiply : 4 restful apis
+ *   // entity -> class
+ *   //global exception handler -
+ *
+ *
+ *   //
+ *		the data type in json - key - value pair
+ *			key must be a string ""
+ *			value -> String -> {"name" : "Pengfei"}
+ *					-> number in JSON much be an integer or a floating point
+ *					-> object->{"people":{"name":"Pengfei", "age":25, "state": "IL"}}
+ *					->	Array-> {"people" : ["pengfei", "Matt","Leo"]}
+ *					-> boolean -> {"isPeople" : true}
+ *					-> null -> {"people" : null}
+ *
+ *   {"result":-8.0}
+ *
+ *  put vs get vs delete vs pathc vs post
+ *  getMapping: fetch/retrieve a result/resource from the server
+ *  postMapping: creating a new resource on the server side
+ *  putMapping: update an EXISTING resource on the server side
+ *  deleteMapping: delete a resource on the server side
+ *  patchMapping: PARTIALLY update an existing resource on the server side
+ *
+ *
+ *  restController vs controller annotation
+ *  	controller: it returns HTML views  -> view
+ *  	 dispatcher servlet: handles all incoming http(s) requests and dispatches them to the
+ *  	 	appropriate controller in your application(spring MVC framework)
+ *
+ *  	--->request -- step1->   dispatcher servlet <-- step 2-> handler mapping
+ *  												<--step 3---> controller
+ *  											<----step 4----> view resolver
+ *  											<---step 5--->	view
+ *
+ *
+ *
+ *
+ *  	restcontroller: it returns Json or XML
+ *  --->request -- step1->   dispatcher servlet <-- step 2-> handler mapping
+ *  												<--step 3 --> restcontroller
+ *
+ *
+ *
+ *  pathVariable vs requestBody vs requestParam
+ *  pathVariable: fetch the values from the URL variable
+ *  example: localhost:80/add/1/2 ->
+ *
+ *  requestBody
+ *  you can use requestBody to test an object from the URL
+ *
+ *  ways to test: using postmant, or using this: curl -X GET -H "Content-Type: application/json" -d '{"result":33}' http://localhost:80/test
+ *
+ *
+ * requestParam
+ * used to fetch the parameters from URL
+ * example: localhost:80/param?myCalObject=this is myCal
+ *
+ * myExeception class extends runtime exception
+ *
+ *
+ * the components in spring servlet(dispatcher servlet)
+ * controllers: handling incoming http requests and processing them,
+ *
+ * service: business logic of your application
+ *
+ * repository: handle the data access and persistence layer of your application
+ *
+ * model: data or state of ur application
+ *
+ * view: for rendering the response
+ *
+ *
+ *
+ * what is spring ioc
+ * it is container that includes / stores all the beans
+ *
+ * ApplicationContext -> BeanFactory
+ *
+ * [ApplicationContext container -> CalculatorController bean]
+ *
+ * what is dependency injection:
+ * @AutoWired -> fetch the bean from IOC by TYPE
+ *
+ * @Qualifier("yourBeanName") -> fetch the bean from IOC by NAME
+ *
+ * // interface: SoftwareEng -> sayHello()
+ *
+ *
+ *
+ * what are bean life cycles?
+ * 1:
+ * instantiate:  the spring IOC will create an instance of the bean by using either
+ * 				constructor or a factory method
+ *
+ * 	2:
+ * 		populate the properties
+ *
+ * 	3: beanPostProcessor: it is useful, when you want to customize bean creation before initialization
+ *
+ * 	4:
+ *
+ * 		initialization: initializing your bean
+ *
+ *
+ * 	5: check whether or not you customized bean creation after initialization
+ *
+ * 	6: using -> bean
+ *
+ * 	7: termination
+ *
+ *
+ * 	bean scope:
+ * 	how to define the bean scope:
+ * 		1: using annotation
+ * 		2: using XML
+ *
+ * 	1: Singleton(default):
+ * 		there is only one instance of the bean per spring container no matter how many requests you ask
+ * 		<bean id ="youBeanName" class ="your.bean.path" scope="singleton"/>
+ * 		<bean id ="youBeanName" class ="your.bean.path"/>
+ *
+ * 	2: prototype
+ *
+ * 		a new instance of the bean will be created each time it is requested from the container
+ * 			<bean id ="youBeanName" class ="your.bean.path" scope="prototype"/>
+ * 		the bean is not allowed to shared.
+ * 		you are response for managing the life cycle of bean and release bean's resources
+ * 	3: request
+ * 		a new instance of the bean will be created when you are trying to do http request in a web application
+ * 		the bean is related/ scoped to the life cycle of single http request
+ *
+ *			 @RequestScope
+ * 			<bean id ="youBeanName" class ="your.bean.path" scope="request"/>
+ *
+ * 	4: session
+ * 	a new instance of the bean will be created for each user session in a web application
+ * 			scoped to the life cycle of http session
+ * 			@SessionScope
+ * 		<bean id ="youBeanName" class ="your.bean.path" scope="session"/>
+ *
+ * 	5: application bean scope
+ * 			the container will help you create ONE instance of the bean during web application runtime
+ * 				servletContext ->
+ *
+ *
+ * 	session vs cookies
+ * 	they are both used in your web application to maintain state and store some informations
+ * 	related to users
+ *
+ * 	session: server side
+ * 			the server will create a unique session for each user
+ * 			session is stored in the server side
+ * 			session is used to store user-specific information, like authentication
+ * 			session is managed by the server
+ *
+ *
+ * 	cookies:
+ * 			it is stored on the user side
+ * 			it is set by server and send back to client side
+ * 			smaller data
+ * 			login credentials information, user prefeneces
+ * 			can be set with an expiration time.
+ *
+ *
+ * step 1
+ *
+ * CREATE TABLE customer(
+ * 	customer_id INT PRIMARY KEY,
+ * 	first_name VARCHAR(255),
+ * 		last_name VARCHAR(255),
+ * 	age INT,
+ * 	country VARCHAR(255)
+ * )
+ *
+ * insert into customer(customer_id, first_name,last_name,age,country) values
+ * (6, 'Jessica', 'Brown',35,'USA'), .......
+ *
+ *
+ * step 2: create entity
+ * snowflakes:
+ *
+ * @GeneratedValue(strategy = GenerationType.AUTO)
+ * 	the persistence provider will choose the appropriate strategy based on the database
+ *
+ * @GeneratedValue(strategy = GenerationType.Identity)
+ * 	auto-incrementing column in the datbase
+ * @GeneratedValue(strategy = GenerationType.TABLE)
+ * we will use the separate table to track the next available values
+ * table -> my_ids{
+ *
+ *     1: 	32riuskfjgh
+ *     2:  skjfdga232
+ * }
+ *
+ * @GeneratedValue(strategy = GenerationType.SEQUENCE)
+ *
+ *  the primary key is generated by database sequence
+ *
+ * request -> controller -> service -> repo -> database
+ *
+ *setter injection:
+ * 	you can change components during your application runtime
+ *
+ *  setMyObject(ThisISRepo thisIsRepo){
+ *      this.thisIsRepo = thisIsRepo
+ *  }
+ *
+ *  constructor inject
+ *  	better to test, it is immutable -> thread safe if you have concurrent application
+ *    private final CustomerRepo customerRepo;
+ *     public CustomerServiceImpl(CustomerRepo customerRepo){
+ *         this.customerRepo = customerRepo;
+ *     }
+ *
+ *     field inject:
+ *     you can directly inject components into the class
+ *     drawback: hard to test, tight coupling
+ *
+ * @Autowire
+ * CustomerRepo customerRepo;
+ *
+ *
  *
  *
  */
@@ -230,6 +527,11 @@ public class JavaMaySpringApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JavaMaySpringApplication.class, args);
+//		ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(JavaMaySpringApplication.class, args);
+//		String[] myBeans = configurableApplicationContext.getBeanDefinitionNames();
+//		for (String myBean : myBeans) {
+//			System.out.println(myBean);
+//		}
 	}
 
 }
