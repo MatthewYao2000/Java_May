@@ -229,7 +229,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * user is using http -> no encryption
  * user is using https -> encrypted data -> server
  *
- *  TCP happens before this encryption
+ * TCP happens before this encryption
  *
  * processing of encryption
  *
@@ -518,6 +518,55 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @Autowire
  * CustomerRepo customerRepo;
  *
+ *
+ *
+ * spring AOP
+ *
+ * system you need to consider aop:
+ *
+ *      logging, security, redis caching, transaction management, error handling,
+ *      logger:
+ *1. Aspect: An aspect encapsulates a cross-cutting concern, such as logging or transaction management. It contains advice and pointcut declarations.
+ * 2. Advice: Advice represents the action taken by an aspect at a particular join point. It specifies what needs to be done and when it should be applied. Common advice types are **`@Before`**, **`@After`**, **`@AfterReturning`**, **`@AfterThrowing`**, and **`@Around`**.
+ * 3. Join Point: A join point is a specific point during the execution of a program, such as method execution, exception handling, or field access. Join points are the target points where advice can be applie
+ * 4. Pointcut: A pointcut is a predicate that matches one or more join points in the application. It defines the specific methods or locations in the code where advice should be applied. Pointcuts use expressions to define matching pattern
+ * 5. Weaving: Weaving is the process of applying aspects to the target objects at the appropriate join points during the program execution. It can be done at compile-time, load-time, or runtime.
+ * 6. AOPproxy vs target object：softwareService
+ *
+ *
+ * testing
+ *
+ * unit testing: focus on single class, methods,
+ *  frameworks: junit, mockito
+ * integration testing: multiple classes, components,
+ * frameworks: postman, spring boot Test
+ *
+ * TDD
+ * how do you test witt restful apis
+ *
+ * how do you implement TDD
+ * what is TDD: test driven development -> software development   waterfall software development
+ *                                                              |-------<-----------some test failed-----|
+ *                              features request -> write a test --test fail-> write logic code -all test pass->
+ *                                  ->refactor: clean code -----> next features
+ *
+ * localhost:80/hello
+ *
+ *
+ * spring validator
+ *
+ * NotNUll: element must not be null
+ *
+ * Size: the input size should be meets your reqirement
+ *
+ * @MIn: min value -> numeric
+ * @Max maxvalue -> numeric
+ *
+ * @Email: email
+ *
+ * @Vlid: start to valid
+ *
+ * @NotBlank: string element must not be null or blank
  *
  *
  *
